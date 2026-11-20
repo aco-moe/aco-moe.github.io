@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ACO-MoE learns to repair task-relevant observations for visual control in simulation and on a physical Piper robot.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>ACO-MoE · Robust Visual Control</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="experiments.css">
+  <script src="results.js" defer></script>
+  <script src="experiment-tables.js" defer></script>
+  <script src="experiments.js" defer></script>
+</head>
+<body>
+  <header class="site-header wrap">
+    <a class="brand" href="#top">ACO<span>·</span>MoE</a>
+    <nav aria-label="Sections"><a href="#method">Method</a><a href="#vdcs">VDCS</a><a href="#simulation">Simulation</a><a href="#robot">Real robot</a><a href="#citation">Citation</a></nav>
+    <a class="paper-link" href="https://arxiv.org/abs/2604.24661">arXiv</a>
+  </header>
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="title">
+      <p class="eyebrow"><span></span> Robust visual control</p>
+      <h1 id="title">Agent-Centric<br>Observation Adaptation</h1>
+      <p class="subtitle">for robust visual control under dynamic perturbations</p>
+      <p class="authors">
+        <span><a href="https://www.zhengrufang.com/">Zhengru Fang</a><sup>1,*</sup></span>
+        <span><a href="https://gy65896.github.io/">Yu Guo</a><sup>2,*</sup></span>
+        <span><a href="https://arxiv.org/search/?query=Huanhuan+Lou&amp;searchtype=author" aria-label="Huanhuan Lou, arXiv publications">Huanhuan Lou</a><sup>2</sup></span>
+        <span><a href="https://feiliu36.github.io/">Fei Liu</a><sup>3</sup></span>
+        <span><a href="https://openreview.net/profile?id=~Yuang_Zhang4" aria-label="Yuang Zhang, OpenReview profile">Yuang Zhang</a><sup>4</sup></span>
+        <span><a href="https://yihangtao.github.io/">Yihang Tao</a><sup>2</sup></span>
+        <span><a href="https://dl-m9.github.io/">Senkang Hu</a><sup>2</sup></span>
+        <span><a href="https://www.sigs.tsinghua.edu.cn/dwb_en/main.psp">Wenbo Ding</a><sup>4</sup></span>
+        <span><a href="https://scholars.cityu.edu.hk/en/persons/yugufang/">Yuguang Fang</a><sup>2</sup></span>
+      </p>
+      <p class="affiliations"><span><sup>1</sup> The Hong Kong University of Science and Technology</span><span><sup>2</sup> City University of Hong Kong</span><span><sup>3</sup> University of Zurich</span><span><sup>4</sup> Tsinghua University</span></p>
+      <p class="equal"><sup>*</sup> Equal contribution. Most of this work was completed at City University of Hong Kong.</p>
+      <div class="actions"><a href="https://arxiv.org/abs/2604.24661">Read the paper</a><a href="https://github.com/fangzr/aco-moe-code">Code on GitHub</a><a href="#robot">Robot demos</a></div>
+      <figure class="teaser"><img src="assets/teaser.webp" alt="The ACO-MoE study spans simulated visual control under changing image degradations and robot manipulation with a learned repair network." width="1440" height="497"></figure>
+      <div class="contributions">
+        <article><small>BENCHMARK</small><h2>Seven switching degradations</h2><p>VDCS changes the type and severity of image degradation within an episode to measure how well visual control holds up over time.</p></article>
+        <article><small>METHOD</small><h2>Repair what drives the action</h2><p>ACO-MoE routes each frame to restoration experts and composes repaired RGB with a predicted task foreground.</p></article>
+        <article><small>DEPLOYMENT</small><h2>From simulation to Piper</h2><p>The learned repair network restores camera observations for visual RL in simulation and a fine-tuned π₀.₅ policy on the physical arm.</p></article>
+      </div>
+    </section>
+    <section id="method" class="section method">
+      <div class="wrap">
+        <p class="eyebrow"><span></span> Method</p>
+        <h2>Restore the task cues the policy needs.</h2>
+        <div class="method-grid">
+          <figure><img src="assets/method.webp" alt="ACO-MoE pipeline showing simulation frames, expert routing, RGB and mask heads, and offline foreground supervision." loading="lazy" width="1300" height="822"></figure>
+          <ol>
+            <li><strong>Build paired observations.</strong> Apply VDCS corruptions to rendered frames and create offline pseudo-labels for task-relevant foregrounds.</li>
+            <li><strong>Train observation repair.</strong> Learn a router and restoration experts with RGB and mask supervision.</li>
+            <li><strong>Compose the policy input.</strong> Use the repaired RGB and predicted foreground to form the agent-centric observation at each control step.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <section id="vdcs" class="section wrap">
+      <p class="eyebrow"><span></span> Visual Degraded Control Suite</p>
+      <h2>See what changes in the controller’s input.</h2>
+      <p class="section-intro">A sticky Markov chain switches among seven image degradations during an episode. Each mode has a base severity, and a random walk varies its strength over time.</p>
+      <div class="controls vdcs-controls">
+        <label for="vdcs-task">Simulation task<select id="vdcs-task"><option value="walker_run">Walker Run</option><option value="cartpole_swingup">Cartpole Swingup</option><option value="finger_turn_hard">Finger Turn Hard</option><option value="cheetah_run">Cheetah Run</option></select></label>
+      </div>
+      <div id="vdcs-examples" class="vdcs-examples" aria-label="Clean observation and the seven VDCS degradations"></div>
+      <p class="source-note">Examples from the paper. Listed values are the benchmark’s base severities.</p>
+    </section>
+    <section id="simulation" class="section simulation">
+      <div class="wrap">
+      <p class="eyebrow"><span></span> Simulation</p>
+      <h2>Recovery under dynamic perturbations.</h2>
+      <p class="section-intro">DreamerV3 mean return across eight VDCS tasks under Markov switching.</p>
+      <div class="results-grid">
+        <div class="score" role="img" aria-label="DreamerV3 mean return from zero: 562 with no restoration, 730 with ACO-MoE, and a clean reference of 769">
+          <div><span>No restoration</span><div class="track"><i style="--fraction:70.25%"></i></div><strong>562</strong></div>
+          <div><span>ACO-MoE</span><div class="track"><i class="highlight" style="--fraction:91.25%"></i></div><strong>730</strong></div>
+          <div><span>Clean reference</span><div class="track"><i class="reference" style="--fraction:96.125%"></i></div><strong>769</strong></div>
+        </div>
+        <div class="result-callout"><strong>81.2%</strong><span>of lost return recovered</span><p>Under six unseen perturbation families, ACO-MoE retains about 70%–97% of the clean mean return.</p></div>
+      </div>
+      <div id="experiment-tables" class="experiment-tables"></div>
+      <details class="evidence">
+        <summary>Learning curves · eight VDCS tasks</summary>
+        <p>Episode return over one million environment steps under Markov switching.</p>
+        <img src="assets/vdcs-curves.webp" alt="Eight task-specific VDCS learning curves comparing ACO-MoE and robust-control baselines." loading="lazy">
+      </details>
+      <details class="evidence">
+        <summary>RoboSuite · Door and Lift with TD-MPC2</summary>
+        <p>Returns under VDCS Markov switching and Video Hard, with examples of the corrupted input, predicted mask, and composed observation.</p>
+        <img src="assets/robosuite.webp" alt="RoboSuite Door and Lift return comparisons for Q², SimGRL, FTR, and ACO-MoE, and example observations." loading="lazy">
+      </details>
+      </div>
+    </section>
+    <section id="robot" class="section robot">
+      <div class="wrap">
+        <p class="eyebrow"><span></span> Real robot</p>
+        <h2>Closed-loop robot trials.</h2>
+        <p class="section-intro">Piper with a fine-tuned π₀.₅ policy. Each pair shows two recorded trials for the selected task and perturbation.</p>
+        <div class="controls">
+          <label for="task">Task<select id="task"><option value="blue">Cube into blue box</option><option value="cup">Cup on coaster</option></select></label>
+          <label for="condition">Perturbation<select id="condition"><option value="blur">Injected motion blur · ι = 0.6</option><option value="dim">Physically dim room + Gaussian noise · ι = 0.5</option></select></label>
+        </div>
+        <div class="trial-video" id="trial-video"></div>
+        <p id="clip-note" class="clip-note"></p>
+        <div class="trial-results" aria-live="polite">
+          <div><span id="count-context">Successes across 20 trials per method</span><strong id="paired-counts"></strong></div>
+          <div><span id="pooled-context"></span><strong id="pooled-counts"></strong></div>
+        </div>
+        <p class="source-note">Without restoration → with ACO-MoE · <a href="https://arxiv.org/pdf/2604.24661">Experiment protocol and full results</a></p>
+      </div>
+    </section>
+    <section id="demos" class="section wrap">
+      <p class="eyebrow"><span></span> Continuous recording</p>
+      <h2>Cup placement under stronger motion blur.</h2>
+      <p class="section-intro">At blur severity 0.8, task-weighted ACO-MoE completes 19 of 20 cup trials. The unrestored policy completes 0 of 10.</p>
+      <figure class="trial-video continuous">
+        <video src="assets/cup-strong-blur.mp4" poster="assets/cup-strong-blur.jpg" controls playsinline preload="none" style="--ratio:960/438" aria-label="Synchronized global and wrist recordings of the Piper arm placing a cup onto a coaster with ACO-MoE under motion blur 0.8."></video>
+        <figcaption>One successful rollout. Synchronized global and wrist cameras at 1× playback.</figcaption>
+      </figure>
+    </section>
+    <section id="citation" class="section wrap">
+      <p class="eyebrow"><span></span> Citation</p>
+      <h2>BibTeX</h2>
+      <div class="citation-actions"><button id="copy-citation" type="button">Copy BibTeX</button><a href="assets/aco-moe.bib" download>Download .bib</a><span id="citation-status" aria-live="polite"></span></div>
+      <pre><code id="bibtex">@misc{fang2026agentcentricobservationadaptationrobust,
+      title={Agent-Centric Observation Adaptation for Robust Visual Control under Dynamic Perturbations},
+      author={Zhengru Fang and Yu Guo and Huanhuan Lou and Fei Liu and Yuang Zhang and Yihang Tao and Senkang Hu and Wenbo Ding and Yuguang Fang},
+      year={2026},
+      eprint={2604.24661},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2604.24661},
+}</code></pre>
+    </section>
+  </main>
+  <footer class="wrap"><b>ACO·MoE</b><div><a href="https://arxiv.org/abs/2604.24661">Paper</a><a href="https://github.com/fangzr/aco-moe-code">Code</a></div></footer>
+</body>
+</html>
