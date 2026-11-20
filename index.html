@@ -109,7 +109,91 @@
           <div><span id="count-context">Successes across 20 trials per method</span><strong id="paired-counts"></strong></div>
           <div><span id="pooled-context"></span><strong id="pooled-counts"></strong></div>
         </div>
-        <p class="source-note">Without restoration → with ACO-MoE · <a href="https://arxiv.org/pdf/2604.24661">Experiment protocol and full results</a></p>
+        <p class="source-note">Without restoration → with ACO-MoE · <a href="#piper-figures">Supplementary robot figures</a> · <a href="https://arxiv.org/pdf/2604.24661">Experiment protocol and full results</a></p>
+      </div>
+    </section>
+    <section id="piper-figures" class="section piper-figures" aria-labelledby="piper-figures-heading">
+      <div class="wrap">
+        <p class="eyebrow"><span></span> Real-robot experiments</p>
+        <h2 id="piper-figures-heading">Inside the Piper experiments.</h2>
+        <p class="section-intro">From camera recordings to closed-loop trials, these figures show how we evaluated ACO-MoE with π₀.₅ on the physical arm. <a href="https://arxiv.org/pdf/2604.24661v5#page=30">Read Appendix J</a>.</p>
+        <nav class="piper-links" aria-label="Piper experiment figures">
+          <a href="#piper-tasks">Tasks and cameras</a>
+          <a href="#piper-sweep">Degradation and action analysis</a>
+          <a href="#piper-rollouts">Closed-loop comparisons</a>
+        </nav>
+
+        <div class="piper-group" id="piper-tasks">
+          <h3>Tasks and cameras</h3>
+          <figure class="piper-card">
+            <a class="piper-image" href="assets/piper/task-sequences.webp" target="_blank" rel="noopener" aria-label="Open Fig. 14 at full size in a new tab">
+              <img src="assets/piper/task-sequences-preview.webp" srcset="assets/piper/task-sequences-preview.webp 1100w, assets/piper/task-sequences.webp 2160w" sizes="(max-width: 530px) calc(100vw - 28px), (max-width: 1168px) calc(100vw - 48px), 1120px" width="2160" height="608" loading="lazy" decoding="async" alt="Five stages of blue-box cube placement, white-box cube placement, and cup placement from three synchronized views.">
+            </a>
+            <figcaption>
+              <div class="piper-caption-heading">
+                <div><p class="piper-figure-number">Supplementary Fig. 14</p><h4>Three manipulation tasks, three camera views</h4></div>
+                <a href="assets/piper/task-sequences.webp" target="_blank" rel="noopener" aria-label="Open Fig. 14 at full size in a new tab">View full size</a>
+              </div>
+              <p>Five phases each for placing a cube into the blue box, placing a cube into the white box, and placing a cup on the coaster. Each task is shown from the third-person, global, and wrist views.</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="piper-group" id="piper-sweep">
+          <h3>Degradation and action analysis</h3>
+          <figure class="piper-card">
+            <a class="piper-image" href="assets/piper/camera-degradations.webp" target="_blank" rel="noopener" aria-label="Open Fig. 15 at full size in a new tab">
+              <img src="assets/piper/camera-degradations-preview.webp" srcset="assets/piper/camera-degradations-preview.webp 1100w, assets/piper/camera-degradations.webp 1792w" sizes="(max-width: 530px) calc(100vw - 28px), (max-width: 1168px) calc(100vw - 48px), 1120px" width="1792" height="1036" loading="lazy" decoding="async" alt="Six camera frames with clean inputs and their counterparts under seven VDCS degradations.">
+            </a>
+            <figcaption>
+              <div class="piper-caption-heading">
+                <div><p class="piper-figure-number">Supplementary Fig. 15</p><h4>Seven degradations on real camera frames</h4></div>
+                <a href="assets/piper/camera-degradations.webp" target="_blank" rel="noopener" aria-label="Open Fig. 15 at full size in a new tab">View full size</a>
+              </div>
+              <p>VDCS operators applied to six held-out frames from the global and wrist cameras. The clean column provides a reference for rain, snow, haze, motion blur, Gaussian noise, low light, and JPEG compression.</p>
+            </figcaption>
+          </figure>
+          <figure class="piper-card">
+            <a class="piper-image" href="assets/piper/severity-sweep.webp" target="_blank" rel="noopener" aria-label="Open Fig. 16 at full size in a new tab">
+              <img src="assets/piper/severity-sweep-preview.webp" srcset="assets/piper/severity-sweep-preview.webp 1100w, assets/piper/severity-sweep.webp 2160w" sizes="(max-width: 530px) calc(100vw - 28px), (max-width: 1168px) calc(100vw - 48px), 1120px" width="2160" height="920" loading="lazy" decoding="async" alt="Seven degradation sweeps show three metrics for the corrupted input and the narrow- and wide-range ACO-MoE models.">
+            </a>
+            <figcaption>
+              <div class="piper-caption-heading">
+                <div><p class="piper-figure-number">Supplementary Fig. 16</p><h4>How degradation severity affects actions and image quality</h4></div>
+                <a href="assets/piper/severity-sweep.webp" target="_blank" rel="noopener" aria-label="Open Fig. 16 at full size in a new tab">View full size</a>
+              </div>
+              <p>A sweep over 128 held-out robot frames compares corrupted inputs with ACO-MoE trained on two severity ranges. The three rows track deviation from clean-input actions, joint error relative to demonstrations, and image PSNR. Shaded bands show 95% confidence intervals over frames.</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="piper-group" id="piper-rollouts">
+          <h3>Closed-loop comparisons</h3>
+          <figure class="piper-card">
+            <a class="piper-image" href="assets/piper/motion-blur-rollouts.webp" target="_blank" rel="noopener" aria-label="Open Fig. 17 at full size in a new tab">
+              <img src="assets/piper/motion-blur-rollouts-preview.webp" srcset="assets/piper/motion-blur-rollouts-preview.webp 1100w, assets/piper/motion-blur-rollouts.webp 2161w" sizes="(max-width: 530px) calc(100vw - 28px), (max-width: 1168px) calc(100vw - 48px), 1120px" width="2161" height="1131" loading="lazy" decoding="async" alt="Blue-box and cup rollouts under motion blur, with and without ACO-MoE at matched steps.">
+            </a>
+            <figcaption>
+              <div class="piper-caption-heading">
+                <div><p class="piper-figure-number">Supplementary Fig. 17</p><h4>Injected motion blur</h4></div>
+                <a href="assets/piper/motion-blur-rollouts.webp" target="_blank" rel="noopener" aria-label="Open Fig. 17 at full size in a new tab">View full size</a>
+              </div>
+              <p>Matched policy steps at severity 0.6. With ACO-MoE, success rises from 1/20 to 19/20 for the blue-box task and from 2/20 to 16/20 for cup placement. Insets show the images sent to the policy.</p>
+            </figcaption>
+          </figure>
+          <figure class="piper-card">
+            <a class="piper-image" href="assets/piper/dim-room-rollouts.webp" target="_blank" rel="noopener" aria-label="Open Fig. 18 at full size in a new tab">
+              <img src="assets/piper/dim-room-rollouts-preview.webp" srcset="assets/piper/dim-room-rollouts-preview.webp 1100w, assets/piper/dim-room-rollouts.webp 2161w" sizes="(max-width: 530px) calc(100vw - 28px), (max-width: 1168px) calc(100vw - 48px), 1120px" width="2161" height="1131" loading="lazy" decoding="async" alt="Blue-box and cup rollouts in a physically dim room, with and without ACO-MoE at matched steps.">
+            </a>
+            <figcaption>
+              <div class="piper-caption-heading">
+                <div><p class="piper-figure-number">Supplementary Fig. 18</p><h4>Physical low light with Gaussian noise</h4></div>
+                <a href="assets/piper/dim-room-rollouts.webp" target="_blank" rel="noopener" aria-label="Open Fig. 18 at full size in a new tab">View full size</a>
+              </div>
+              <p>In a physically dimmed room with added noise, ACO-MoE reaches 18/20 blue-box successes and 15/20 cup successes, up from 0/20 each. The global views are brightened fivefold for display. The insets show the actual policy inputs.</p>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
     <section id="demos" class="section wrap">
